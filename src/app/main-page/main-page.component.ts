@@ -1,4 +1,5 @@
 import { AfterViewInit, Component } from '@angular/core';
+import anime from 'animejs';
 import { Engine, Runner, Render, Composites, Composite, Common, Mouse, MouseConstraint, Bodies, Vertices, Body } from 'matter-js'
 
 
@@ -11,9 +12,35 @@ import { Engine, Runner, Render, Composites, Composite, Common, Mouse, MouseCons
 })
 export class MainPageComponent implements AfterViewInit {
   constructor() { }
+  
+  mobileView : number = 700;
 
   ngAfterViewInit(): void {
+    this.initAnimeScripts();
     this.initMatterScripts();
+  }
+  initAnimeScripts(){
+    if(!(window.innerWidth > this.mobileView)){
+      document.querySelector(".anime-js")?.classList.add("mobile")
+    }
+    const lineDrawing = anime({
+      targets: '#lineDrawing path',
+      strokeDashoffset: [anime.setDashoffset, 0],
+      easing: 'easeOutBounce',
+      duration: 10000,
+      // delay: function(el, i) { return i * 250 },
+      direction: 'forwards',
+      loop: false,
+      autoplay : true,
+      complete : function(d){
+        console.log(d.completed);
+      },
+      begin : (d)=>{
+        setTimeout(()=>{
+          console.log("completed!!");
+        },5000)
+      }
+    })
   }
 
 
@@ -58,13 +85,26 @@ export class MainPageComponent implements AfterViewInit {
 
     await this.createFallingElements(world);
     
+    if(window.innerWidth > this.mobileView){
+      //create-empty-glass
+      _Composite.add(world, [
+        _Bodies.rectangle((window.innerWidth ) - 200, (window.innerHeight) - 100, (150), 1, { isStatic: true, render: { visible: false } }),
+        _Bodies.rectangle((window.innerWidth ) -275, (window.innerHeight) - 185, 1, 200, { isStatic: true, render: { visible: false }, angle: -85 }),
+        _Bodies.rectangle((window.innerWidth ) -125, (window.innerHeight) - 185, 1, 200, { isStatic: true, render: { visible: false }, angle: 85 }),
+      ]);
+    }else{
+      //mobile view...
+      if(document.querySelector(".empty-glass")){
+        document.querySelector(".empty-glass")?.classList.add("mobile");
+      }
+      // .style.class
+      _Composite.add(world, [
+        _Bodies.rectangle((window.innerWidth / 2), (window.innerHeight) - 15, (150), 1, { isStatic: true, render: { visible: false } }),
+        _Bodies.rectangle((window.innerWidth / 2) - 75, (window.innerHeight) - 100, 1, 200, { isStatic: true, render: { visible: false }, angle: -85 }),
+        _Bodies.rectangle((window.innerWidth / 2) + 85, (window.innerHeight) - 100, 1, 200, { isStatic: true, render: { visible: false }, angle: 85 }),
+      ]);
+    }
 
-    //create-empty-glass
-    _Composite.add(world, [
-      _Bodies.rectangle((window.innerWidth / 2), (window.innerHeight) - 15, (150), 1, { isStatic: true, render: { visible: false } }),
-      _Bodies.rectangle((window.innerWidth / 2) - 75, (window.innerHeight) - 100, 1, 200, { isStatic: true, render: { visible: false }, angle: -85 }),
-      _Bodies.rectangle((window.innerWidth / 2) + 85, (window.innerHeight) - 100, 1, 200, { isStatic: true, render: { visible: false }, angle: 85 }),
-    ]);
 
 
 
@@ -87,8 +127,9 @@ export class MainPageComponent implements AfterViewInit {
               gravity.y = Common.clamp(event.gamma, -90, 90) / 90;
           }
       };
-
-      window.addEventListener('deviceorientation', updateGravity);
+      if(!(window.innerWidth > this.mobileView)){
+        window.addEventListener('deviceorientation', updateGravity);
+      }
   }
 
 
@@ -197,40 +238,53 @@ export class MainPageComponent implements AfterViewInit {
     ];
     // Composite.add(world, cubes)
     // await this.waitTime(100);
+    this.createChocoChips(world);
 
-    let stack1 = Composites.stack((window.innerWidth / 2) - 50, -500, 7, 5, 1, 1, function (x: number, y: number){
+    // setInterval(()=>{
+    //   this.createChocoChips(world);
+
+    // },2000)
+  }
+
+  async createChocoChips(world : Matter.World){
+    let tempV = window.innerWidth - 250;
+    if(!(window.innerWidth > this.mobileView)){
+      tempV = (window.innerWidth / 2) - 50;
+    }
+
+    let stack1 = Composites.stack((tempV), -500, 7, 5, 1, 1, function (x: number, y: number){
       // await this.waitTime();
-      return Bodies.circle(x, y, 10, { collisionFilter : { category : redCategory},frictionAir : 0.0001, friction: 0.01, restitution: 0.1, density: 0.001, render: { sprite: { texture: 'assets/choco_chip.png', xScale: 0.07, yScale: 0.07 } } });
+      return Bodies.circle(x, y, 10, { frictionAir : 0.0001, friction: 0.8, restitution: 0.1, density: 0.001, render: { sprite: { texture: 'assets/choco_chip.png', xScale: 0.07, yScale: 0.07 } } });
     });
     Composite.add(world, stack1);
     await this.waitTime(10);
-    let stack2 = Composites.stack((window.innerWidth / 2) - 50, -500, 7, 5, 1, 1, function (x: number, y: number){
+    let stack2 = Composites.stack(tempV, -500, 7, 5, 1, 1, function (x: number, y: number){
       // await this.waitTime();
-      return Bodies.circle(x, y, 10, { collisionFilter : { category : redCategory},frictionAir : 0.01, friction: 0.01, restitution: 0.1, density: 0.001, render: { sprite: { texture: 'assets/choco_chip.png', xScale: 0.07, yScale: 0.07 } } });
+      return Bodies.circle(x, y, 10, { frictionAir : 0.05, friction: 0.8, restitution: 0.1, density: 0.001, render: { sprite: { texture: 'assets/choco_chip.png', xScale: 0.07, yScale: 0.07 } } });
     });
     Composite.add(world, stack2);
     await this.waitTime(50);
-    let stack3 = Composites.stack((window.innerWidth / 2) - 50, -500, 7, 5, 1, 1, function (x: number, y: number){
+    let stack3 = Composites.stack(tempV , -500, 7, 5, 1, 1, function (x: number, y: number){
       // await this.waitTime();
-      return Bodies.circle(x, y, 10, { collisionFilter : { category : redCategory},frictionAir : 0.001, friction: 0.01, restitution: 0.1, density: 0.001, render: { sprite: { texture: 'assets/choco_chip.png', xScale: 0.07, yScale: 0.07 } } });
+      return Bodies.circle(x, y, 10, { frictionAir : 0.03, friction: 0.8, restitution: 0.1, density: 0.001, render: { sprite: { texture: 'assets/choco_chip.png', xScale: 0.07, yScale: 0.07 } } });
     });
     Composite.add(world, stack3);
     await this.waitTime(200);
-    let stack4 = Composites.stack((window.innerWidth / 2) - 50, -500, 7, 10, 1, 1, function (x: number, y: number){
+    let stack4 = Composites.stack(tempV , -500, 7, 10, 1, 1, function (x: number, y: number){
       // await this.waitTime();
-      return Bodies.circle(x, y, 10, { collisionFilter : { category : redCategory},frictionAir : 0.01, friction: 0.01, restitution: 0.1, density: 0.001, render: { sprite: { texture: 'assets/choco_chip.png', xScale: 0.07, yScale: 0.07 } } });
+      return Bodies.circle(x, y, 10, { frictionAir : 0.02, friction: 0.8, restitution: 0.1, density: 0.001, render: { sprite: { texture: 'assets/choco_chip.png', xScale: 0.07, yScale: 0.07 } } });
     });
     Composite.add(world, stack4);
     await this.waitTime(200);
-    let stack5 = Composites.stack((window.innerWidth / 2) - 50, -500, 7, 10, 1, 1, function (x: number, y: number){
+    let stack5 = Composites.stack(tempV, -500, 7, 10, 1, 1, function (x: number, y: number){
       // await this.waitTime();
-      return Bodies.circle(x, y, 10, { collisionFilter : { category : redCategory},frictionAir : 0.01, friction: 0.01, restitution: 0.1, density: 0.001, render: { sprite: { texture: 'assets/choco_chip.png', xScale: 0.07, yScale: 0.07 } } });
+      return Bodies.circle(x, y, 10, { frictionAir : 0.02, friction: 0.8, restitution: 0.1, density: 0.001, render: { sprite: { texture: 'assets/choco_chip.png', xScale: 0.07, yScale: 0.07 } } });
     });
     Composite.add(world, stack5);
     await this.waitTime(200);
-    let stack6 = Composites.stack((window.innerWidth / 2) - 50, -500, 7, 10, 1, 1, function (x: number, y: number){
+    let stack6 = Composites.stack(tempV , -500, 7, 10, 1, 1, function (x: number, y: number){
       // await this.waitTime();
-      return Bodies.circle(x, y, 10, { collisionFilter : { category : redCategory},frictionAir : 0.01, friction: 0.01, restitution: 0.1, density: 0.001, render: { sprite: { texture: 'assets/choco_chip.png', xScale: 0.07, yScale: 0.07 } } });
+      return Bodies.circle(x, y, 10, { frictionAir : 0.02, friction: 0.8, restitution: 0.1, density: 0.001, render: { sprite: { texture: 'assets/choco_chip.png', xScale: 0.07, yScale: 0.07 } } });
     });
     Composite.add(world, stack6);
   }

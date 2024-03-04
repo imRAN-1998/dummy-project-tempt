@@ -9,12 +9,91 @@
     // border:1px solid grey;
     // background-color: red;
     overflow: hidden;
+    background-color: rgba(255,255,191,1);
 }
 .empty-glass{
+    z-index: 100;
+    position: absolute;
+    top:70%;
+    left:80%;
+    transform: translate(calc(-50% + 30px),calc(-50% - 20px));
+    // border:1px solid red;
+    // padding:120px;
+    
+}
+.empty-glass.mobile{
     position: absolute;
     top:100%;
     left:50%;
-    transform: translate(-50%,-100%);
-    // border:1px solid red;
-    // padding:120px;
+    transform: translate(calc(-50% + 10px),-100%);
+}
+.tempt-logo{
+    position: absolute;
+    top:100%;
+    left:50%;
+    // width:150px;
+    // height: 200px;
+    transform: translate(-50%,calc(-100% + 20px));
+}
+.anime-js{
+    z-index: 1000;
+    position: absolute;
+    top:50%;
+    left:40%;
+    transform: Scale(1.8)rotate(-20deg)translate(-50%,-50%);
+    // .tempt-back-image{
+    //     display: none;
+    //     position: absolute;
+    //     top:100%;
+    //     left:80%;
+    //     transform: Scale(1.8)translate(-50%,-50%);
+    //     img{
+    //         width:171px;
+    //         height: 105px;
+    //     }
+    // }
+    svg{
+        z-index: 10000;
+        stroke:#481803;
+        scroll-behavior: smooth;
+        // fill:red;
+        animation: animefill 1.5s ease-out 3s forwards ;
+        // box-shadow: 1px 1px 50px #481803;
+        path{
+            stroke:#481803;
+        }
+    }
+}
+.anime-js.mobile{
+    z-index: 1000;
+    position: absolute;
+    top:30%;
+    left:50%;
+    transform:rotate(-20deg)translate(-50%,-50%);
+    // .tempt-back-image{
+    //     display: none;
+    //     position: absolute;
+    //     top:100%;
+    //     left:80%;
+    //     transform: Scale(1.8)translate(-50%,-50%);
+    //     img{
+    //         width:171px;
+    //         height: 105px;
+    //     }
+    // }
+    svg{
+        z-index: 10000;
+        stroke:#481803;
+        scroll-behavior: smooth;
+        // fill:red;
+        animation: animefill 1.5s ease-out 3s forwards ;
+        // box-shadow: 1px 1px 50px #481803;
+        path{
+            stroke:#481803;
+        }
+    }
+}
+@keyframes animefill{
+    from { fill : transparent;stroke:#481803;z-index: 10000;}
+    to { fill : #A74B25; stroke:#481803;z-index: 10000;}
 }
