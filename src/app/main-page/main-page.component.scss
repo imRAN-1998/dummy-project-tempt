@@ -1,0 +1,20 @@
+
+.main-container{
+    width:100%;
+    height: 100vh;
+    padding: 0;
+    margin:0;
+    box-sizing: border-box;
+    // position: relative;
+    // border:1px solid grey;
+    // background-color: red;
+    overflow: hidden;
+}
+.empty-glass{
+    position: absolute;
+    top:100%;
+    left:50%;
+    transform: translate(-50%,-100%);
+    // border:1px solid red;
+    // padding:120px;
+}
