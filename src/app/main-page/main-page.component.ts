@@ -141,7 +141,7 @@ export class MainPageComponent implements AfterViewInit {
     let redCategory = 0x0002;
     let yellowCategory  = 0x0004;
     //create choco_cubes
-    Composite.add(world, [
+    const cubes : any = [
       Bodies.rectangle((window.innerWidth / 2), window.innerHeight/2, (50), 50,
         {
           mass : 0.1,
@@ -194,32 +194,45 @@ export class MainPageComponent implements AfterViewInit {
             }
           }
         })
-    ])
-    await this.waitTime(100);
+    ];
+    // Composite.add(world, cubes)
+    // await this.waitTime(100);
 
     let stack1 = Composites.stack((window.innerWidth / 2) - 50, -500, 7, 5, 1, 1, function (x: number, y: number){
       // await this.waitTime();
-      return Bodies.circle(x, y, 10, { collisionFilter : { category : redCategory},frictionAir : 0.06, friction: 0.01, restitution: 0.1, density: 0.001, render: { sprite: { texture: 'assets/choco_chip.png', xScale: 0.07, yScale: 0.07 } } });
+      return Bodies.circle(x, y, 10, { collisionFilter : { category : redCategory},frictionAir : 0.0001, friction: 0.01, restitution: 0.1, density: 0.001, render: { sprite: { texture: 'assets/choco_chip.png', xScale: 0.07, yScale: 0.07 } } });
     });
     Composite.add(world, stack1);
     await this.waitTime(10);
     let stack2 = Composites.stack((window.innerWidth / 2) - 50, -500, 7, 5, 1, 1, function (x: number, y: number){
       // await this.waitTime();
-      return Bodies.circle(x, y, 10, { collisionFilter : { category : redCategory},frictionAir : 0.06, friction: 0.01, restitution: 0.1, density: 0.001, render: { sprite: { texture: 'assets/choco_chip.png', xScale: 0.07, yScale: 0.07 } } });
+      return Bodies.circle(x, y, 10, { collisionFilter : { category : redCategory},frictionAir : 0.01, friction: 0.01, restitution: 0.1, density: 0.001, render: { sprite: { texture: 'assets/choco_chip.png', xScale: 0.07, yScale: 0.07 } } });
     });
     Composite.add(world, stack2);
-    await this.waitTime(10);
+    await this.waitTime(50);
     let stack3 = Composites.stack((window.innerWidth / 2) - 50, -500, 7, 5, 1, 1, function (x: number, y: number){
       // await this.waitTime();
-      return Bodies.circle(x, y, 10, { collisionFilter : { category : redCategory},frictionAir : 0.06, friction: 0.01, restitution: 0.1, density: 0.001, render: { sprite: { texture: 'assets/choco_chip.png', xScale: 0.07, yScale: 0.07 } } });
+      return Bodies.circle(x, y, 10, { collisionFilter : { category : redCategory},frictionAir : 0.001, friction: 0.01, restitution: 0.1, density: 0.001, render: { sprite: { texture: 'assets/choco_chip.png', xScale: 0.07, yScale: 0.07 } } });
     });
     Composite.add(world, stack3);
-    await this.waitTime(10);
-    let stack4 = Composites.stack((window.innerWidth / 2) - 50, -500, 7, 5, 1, 1, function (x: number, y: number){
+    await this.waitTime(200);
+    let stack4 = Composites.stack((window.innerWidth / 2) - 50, -500, 7, 10, 1, 1, function (x: number, y: number){
       // await this.waitTime();
-      return Bodies.circle(x, y, 10, { collisionFilter : { category : redCategory},frictionAir : 0.06, friction: 0.01, restitution: 0.1, density: 0.001, render: { sprite: { texture: 'assets/choco_chip.png', xScale: 0.07, yScale: 0.07 } } });
+      return Bodies.circle(x, y, 10, { collisionFilter : { category : redCategory},frictionAir : 0.01, friction: 0.01, restitution: 0.1, density: 0.001, render: { sprite: { texture: 'assets/choco_chip.png', xScale: 0.07, yScale: 0.07 } } });
     });
     Composite.add(world, stack4);
+    await this.waitTime(200);
+    let stack5 = Composites.stack((window.innerWidth / 2) - 50, -500, 7, 10, 1, 1, function (x: number, y: number){
+      // await this.waitTime();
+      return Bodies.circle(x, y, 10, { collisionFilter : { category : redCategory},frictionAir : 0.01, friction: 0.01, restitution: 0.1, density: 0.001, render: { sprite: { texture: 'assets/choco_chip.png', xScale: 0.07, yScale: 0.07 } } });
+    });
+    Composite.add(world, stack5);
+    await this.waitTime(200);
+    let stack6 = Composites.stack((window.innerWidth / 2) - 50, -500, 7, 10, 1, 1, function (x: number, y: number){
+      // await this.waitTime();
+      return Bodies.circle(x, y, 10, { collisionFilter : { category : redCategory},frictionAir : 0.01, friction: 0.01, restitution: 0.1, density: 0.001, render: { sprite: { texture: 'assets/choco_chip.png', xScale: 0.07, yScale: 0.07 } } });
+    });
+    Composite.add(world, stack6);
   }
 
   async waitTime(time : number){
